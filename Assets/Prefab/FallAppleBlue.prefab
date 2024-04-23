@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 8294922464569832785}
   - component: {fileID: 4766048963437838001}
   - component: {fileID: 5706453799230373109}
-  - component: {fileID: -2334186788166410557}
+  - component: {fileID: -237961841786544537}
   m_Layer: 0
-  m_Name: FallAppleGold
+  m_Name: FallAppleBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,8 +33,7 @@ Transform:
   m_LocalPosition: {x: -6.6311154, y: 5.537868, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6502143091389792880}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &159745070050702089
@@ -65,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddbc404a30b7d124dbd99703dbf1edc7, type: 2}
+  - {fileID: 2100000, guid: 8fa9bf092014d24469f6c571f84e1d85, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -135,7 +134,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-2334186788166410557
+--- !u!114 &-237961841786544537
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,69 +146,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c8af6437dcc5114789eb12eb26cf5dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &6600702096933834716
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 3162742685800206952}
-    m_Modifications:
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3560884413296253929, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6433204069339013261, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-      propertyPath: m_Name
-      value: GoaldAppleEffect
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
---- !u!4 &6502143091389792880 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 118825479282511276, guid: 34e1394fa56a36b4484835ec0acbb2d9, type: 3}
-  m_PrefabInstance: {fileID: 6600702096933834716}
-  m_PrefabAsset: {fileID: 0}

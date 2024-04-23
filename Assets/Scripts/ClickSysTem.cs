@@ -1,44 +1,53 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using UnityEngine.Serialization;
+
 
 public class ClickSysTem : MonoBehaviour
 {
     RandomNumSystem _randomNumSystem;
     RaycastHit _clickHit;
     Vector3 _clickPos;
-    [SerializeField] List<float> _punchPower = new List<float>();
-    [SerializeField] List<int> _weights = new List<int>();   // d‚İİ’è—p•Ï”
-    [SerializeField] List<int> _buyPunchPower = new List<int>();
-    [SerializeField] Text _clickCountText = default;
-    [SerializeField] Text _nextPunchPowerBuyText = default;
-    [SerializeField] Text _scaleAppleText = default;
-    [SerializeField] GameObject[] _spawnPoints;     //ƒIƒuƒWƒFƒNƒg‚ÌoŒ»’n“_
-    [SerializeField] GameObject[] _spawnObjects;    //ƒNƒŠƒbƒN‚µ‚½‚ç¶¬‚³‚ê‚éƒIƒuƒWƒFƒNƒg
+    [SerializeField] List<float> _punchPower = new();
+    [SerializeField] List<float> _weights = new(); // é‡ã¿è¨­å®šç”¨å¤‰æ•°
+    [SerializeField] List<float> _buyPunchPower = new();
+    [SerializeField] Text _clickCountText;
+    [SerializeField] Text _nextPunchPowerBuyText;
+    [SerializeField] Text _scaleAppleText;
+    [SerializeField] GameObject[] _spawnPoints; //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‡ºç¾åœ°ç‚¹
+    [SerializeField] GameObject[] _spawnObjects; //ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰ç”Ÿæˆã•ã‚Œã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+
+    [FormerlySerializedAs("_punchImage")] [SerializeField]
+    GameObject _punchUI;
+
     GameObject _clickObj = default;
     int _randomNum = 0;
     int _punchPowerCount = 0;
     int _buyPunchPowerCount = 0;
-    float _spawnCount = 0;
-    private void Awake()
+    float _spawnCount = 10000000;
+
+    void Awake()
     {
-        _randomNumSystem = GameObject.FindAnyObjectByType<RandomNumSystem>();
+        _randomNumSystem = FindAnyObjectByType<RandomNumSystem>();
     }
 
     void Start()
     {
         _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString();
     }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(mousePos, out _clickHit))
             {
                 if (_clickHit.collider.gameObject.name == "Tree")
                 {
-                    for (int i = 0; i < _punchPower[_punchPowerCount]; i++)
+                    for (var i = 0; i < _punchPower[_punchPowerCount]; i++)
                     {
                         InstanceObject();
                     }
@@ -47,49 +56,68 @@ public class ClickSysTem : MonoBehaviour
         }
     }
 
-    public void InstanceObject()
+    void InstanceObject()
     {
         _randomNumSystem.ChooseStart();
         switch (_randomNumSystem.ChooseStart())
         {
-
             case 0:
-                AppleInstance(0,1);
+                AppleInstance(0, 1);
                 return;
             case 1:
-                AppleInstance(1,1.5f);
+                AppleInstance(1, 1.5f);
                 return;
             case 2:
-                AppleInstance(2,2);
+                AppleInstance(2, 1.5f);
+                return;
+            case 3:
+                AppleInstance(2, 25);
+                return;
+            case 4:
+                AppleInstance(2, 50);
                 return;
         }
     }
 
-    private void AppleInstance(int value,float value2)
+    void AppleInstance(int value, float value2)
     {
-        Instantiate(_spawnObjects[value], _spawnPoints[RandomNamValue(0, _spawnPoints.Length)].transform.position, Quaternion.identity);
-        _spawnCount += 1 * _punchPower[_punchPowerCount]*value2;
-        _clickCountText.text = _spawnCount.ToString("f0");
+        Instantiate(_spawnObjects[value], _spawnPoints[RandomNamValue(0, _spawnPoints.Length)].transform.position,
+            Quaternion.identity);
+        _spawnCount += 1 * _punchPower[_punchPowerCount] * value2;
+        _clickCountText.text = _spawnCount.ToString();
     }
 
-    public int RandomNamValue(int minValue, int MaxValue)
+    int RandomNamValue(int minValue, int maxValue)
     {
-        return Random.Range(minValue, MaxValue);
+        return Random.Range(minValue, maxValue);
     }
+
     public void PunchPowerLevelUp()
     {
-        if (_spawnCount >= _buyPunchPower[_buyPunchPowerCount])
+        if (_punchPowerCount != 9)
         {
-            _spawnCount -= _buyPunchPower[_buyPunchPowerCount];
-            _buyPunchPowerCount++;
-            _punchPowerCount++;
-            _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString();
-            _scaleAppleText.text = _punchPower[_punchPowerCount].ToString();
-            _clickCountText.text = _spawnCount.ToString("f0");
+            Debug.Log(_punchPowerCount);
+            if (_spawnCount >= _buyPunchPower[_buyPunchPowerCount])
+            {
+                _spawnCount -= _buyPunchPower[_buyPunchPowerCount];
+                _buyPunchPowerCount++;
+                _punchPowerCount++;
+                _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString();
+                _scaleAppleText.text = _punchPower[_punchPowerCount].ToString();
+                _clickCountText.text = _spawnCount.ToString();
+
+            }
+            else
+            {
+                Debug.Log("å¼·åŒ–ã§ããªã„");
+            }
         }
         else
         {
-            Debug.Log("‹­‰»‚Å‚«‚È‚¢");
+            _nextPunchPowerBuyText.text = "æœ€å¤§ã§ã™";
         }
+
+        _punchUI.transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f)
+            .OnComplete(() => { _punchUI.transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), 0.2f); });
     }
 }

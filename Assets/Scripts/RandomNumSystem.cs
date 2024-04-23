@@ -1,40 +1,37 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 public class RandomNumSystem : MonoBehaviour
 {
-    [SerializeField] List<int> weights = new List<int>();   // d‚İİ’è—p•Ï”
-    /// <summary>ƒKƒ`ƒƒÀsƒƒ\ƒbƒh</summary>
+    [FormerlySerializedAs("weights")] [SerializeField] List<float> _weights = new List<float>(); // ï¿½dï¿½İİ’ï¿½pï¿½Ïï¿½
+
+    /// <summary>ï¿½Kï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½\ï¿½bï¿½h</summary>
     public int ChooseStart()
     {
-        return Choose(weights);
+        return Choose(_weights);
     }
 
-    /// <summary>’Š‘Iƒƒ\ƒbƒh</summary>
-    public int Choose(List<int> weight)
+    /// <summary>ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½\ï¿½bï¿½h</summary>
+    int Choose(List<float> weight)
     {
         float total = 0f;
-        //”z—ñ‚Ì—v‘f‚ğtotal‚É‘ã“ü
-        for (int i = 0; i < weight.Count; i++)
+        //ï¿½zï¿½ï¿½Ì—vï¿½fï¿½ï¿½totalï¿½É‘ï¿½ï¿½
+        foreach (var t in weight)
         {
-            total += weight[i];
+            total += t;
         }
-        //Random.value‚Í0.1‚©‚ç1‚Ü‚Å‚Ì’l‚ğ•Ô‚·
+
+        //Random.valueï¿½ï¿½0.1ï¿½ï¿½ï¿½ï¿½1ï¿½Ü‚Å‚Ì’lï¿½ï¿½Ô‚ï¿½
         float random = Random.value * total;
-        //weight‚ªrandom‚æ‚è‘å‚«‚¢‚©‚ğ’T‚·
+        //weightï¿½ï¿½randomï¿½ï¿½ï¿½å‚«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Tï¿½ï¿½
         for (int i = 0; i < weight.Count; i++)
         {
-            if (random < weight[i])
-            {
-                //ƒ‰ƒ“ƒ_ƒ€‚Ì’l‚æ‚èd‚İ‚ª‘å‚«‚©‚Á‚½‚ç‚»‚Ì’l‚ğ•Ô‚·
-                return i;
-            }
-            else
-            {
-                //Ÿ‚Ìweight‚ªˆ—‚³‚ê‚é‚æ‚¤‚É‚·‚é
-                random -= weight[i];
-            }
+            if (random < weight[i]) return i; //ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½Ì’lï¿½ï¿½ï¿½dï¿½İ‚ï¿½ï¿½å‚«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç‚»ï¿½Ì’lï¿½ï¿½Ô‚ï¿½
+            else random -= weight[i]; //ï¿½ï¿½ï¿½ï¿½weightï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½
         }
-        //‚È‚©‚Á‚½‚çÅŒã‚Ì’l‚ğ•Ô‚·
+
+        //ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÅŒï¿½Ì’lï¿½ï¿½Ô‚ï¿½
         return weight.Count - 1;
     }
 }

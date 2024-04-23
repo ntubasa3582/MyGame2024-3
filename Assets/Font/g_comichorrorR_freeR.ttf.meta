@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4920aa7a07df46b49bdf35ad3b1319f2
+guid: 743e0027a4634cd4f92da64ed7b851db
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - GauFontDonutShop
+  - g_comichorrorR_free-Regular
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
