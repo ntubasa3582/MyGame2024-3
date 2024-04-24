@@ -26,7 +26,7 @@ public class ClickSysTem : MonoBehaviour
     int _randomNum = 0;
     int _punchPowerCount = 0;
     int _buyPunchPowerCount = 0;
-    float _spawnCount = 10000000;
+    float _spawnCount = 0;
 
     void Awake()
     {
@@ -35,7 +35,7 @@ public class ClickSysTem : MonoBehaviour
 
     void Start()
     {
-        _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString();
+        _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString("f0");
     }
 
     void Update()
@@ -84,7 +84,11 @@ public class ClickSysTem : MonoBehaviour
         Instantiate(_spawnObjects[value], _spawnPoints[RandomNamValue(0, _spawnPoints.Length)].transform.position,
             Quaternion.identity);
         _spawnCount += 1 * _punchPower[_punchPowerCount] * value2;
-        _clickCountText.text = _spawnCount.ToString();
+        _clickCountText.text = _spawnCount.ToString("f0");
+        _clickCountText.rectTransform.DOPivotY(0.3f, 0.1f).OnComplete(() =>
+        {
+            _clickCountText.rectTransform.DOPivotY(0.5f, 0.1f);
+        });
     }
 
     int RandomNamValue(int minValue, int maxValue)
@@ -104,7 +108,7 @@ public class ClickSysTem : MonoBehaviour
                 _punchPowerCount++;
                 _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString();
                 _scaleAppleText.text = _punchPower[_punchPowerCount].ToString();
-                _clickCountText.text = _spawnCount.ToString();
+                _clickCountText.text = _spawnCount.ToString("f0");
 
             }
             else
