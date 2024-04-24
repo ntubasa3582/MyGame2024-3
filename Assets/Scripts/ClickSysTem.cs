@@ -7,26 +7,24 @@ using UnityEngine.Serialization;
 
 public class ClickSysTem : MonoBehaviour
 {
-    RandomNumSystem _randomNumSystem;
-    RaycastHit _clickHit;
-    Vector3 _clickPos;
     [SerializeField] List<float> _punchPower = new();
-    [SerializeField] List<float> _weights = new(); // 重み設定用変数
     [SerializeField] List<float> _buyPunchPower = new();
     [SerializeField] Text _clickCountText;
     [SerializeField] Text _nextPunchPowerBuyText;
     [SerializeField] Text _scaleAppleText;
     [SerializeField] GameObject[] _spawnPoints; //オブジェクトの出現地点
     [SerializeField] GameObject[] _spawnObjects; //クリックしたら生成されるオブジェクト
-
-    [FormerlySerializedAs("_punchImage")] [SerializeField]
-    GameObject _punchUI;
-
-    GameObject _clickObj = default;
-    int _randomNum = 0;
-    int _punchPowerCount = 0;
-    int _buyPunchPowerCount = 0;
-    float _spawnCount = 0;
+    [SerializeField] GameObject _punchUI;
+    [SerializeField] Image[] _gameClearImages;
+    RandomNumSystem _randomNumSystem;
+    RaycastHit _clickHit;
+    Vector3 _clickPos;
+    GameObject _clickObj;
+    int _randomNum;
+    int _punchPowerCount ;
+    int _buyPunchPowerCount;
+    float _spawnCount;
+    bool _isGameClear = true;
 
     void Awake()
     {
@@ -36,23 +34,41 @@ public class ClickSysTem : MonoBehaviour
     void Start()
     {
         _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString("f0");
+        _scaleAppleText.text = _punchPower[_punchPowerCount].ToString();
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!_isGameClear)
         {
-            var mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(mousePos, out _clickHit))
+            if (Input.GetMouseButtonDown(0))
             {
-                if (_clickHit.collider.gameObject.name == "Tree")
+                var mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(mousePos, out _clickHit))
                 {
-                    for (var i = 0; i < _punchPower[_punchPowerCount]; i++)
+                    if (_clickHit.collider.gameObject.name == "Tree")
                     {
-                        InstanceObject();
+                        for (var i = 0; i < _punchPower[_punchPowerCount]; i++)
+                        {
+                            InstanceObject();
+                        }
                     }
                 }
-            }
+            }   
+        }
+        else
+        {
+            
+        }
+
+        if (_isGameClear == true)
+        {
+            _gameClearImages[0].rectTransform.DOMoveX(-357, 0.5f);
+            _gameClearImages[1].rectTransform.DOMoveX(435, 0.5f);  
+        } 
+        if (_spawnCount == 50000000)
+        {
+            
         }
     }
 
@@ -71,17 +87,17 @@ public class ClickSysTem : MonoBehaviour
                 AppleInstance(2, 1.5f);
                 return;
             case 3:
-                AppleInstance(2, 25);
+                AppleInstance(3, 25);
                 return;
             case 4:
-                AppleInstance(2, 50);
+                AppleInstance(4, 50);
                 return;
         }
     }
 
     void AppleInstance(int value, float value2)
     {
-        Instantiate(_spawnObjects[value], _spawnPoints[RandomNamValue(0, _spawnPoints.Length)].transform.position,
+        Instantiate(_spawnObjects[value], _spawnPoints[RandomNumValue(0, _spawnPoints.Length)].transform.position,
             Quaternion.identity);
         _spawnCount += 1 * _punchPower[_punchPowerCount] * value2;
         _clickCountText.text = _spawnCount.ToString("f0");
@@ -91,7 +107,7 @@ public class ClickSysTem : MonoBehaviour
         });
     }
 
-    int RandomNamValue(int minValue, int maxValue)
+    int RandomNumValue(int minValue, int maxValue)
     {
         return Random.Range(minValue, maxValue);
     }
@@ -100,7 +116,6 @@ public class ClickSysTem : MonoBehaviour
     {
         if (_punchPowerCount != 9)
         {
-            Debug.Log(_punchPowerCount);
             if (_spawnCount >= _buyPunchPower[_buyPunchPowerCount])
             {
                 _spawnCount -= _buyPunchPower[_buyPunchPowerCount];
@@ -109,7 +124,6 @@ public class ClickSysTem : MonoBehaviour
                 _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString();
                 _scaleAppleText.text = _punchPower[_punchPowerCount].ToString();
                 _clickCountText.text = _spawnCount.ToString("f0");
-
             }
             else
             {
