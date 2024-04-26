@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 
 public class ClickSysTem : MonoBehaviour
@@ -12,33 +12,47 @@ public class ClickSysTem : MonoBehaviour
     [SerializeField] Text _clickCountText;
     [SerializeField] Text _nextPunchPowerBuyText;
     [SerializeField] Text _scaleAppleText;
+    [SerializeField] Text _timerText;
+    [SerializeField] Text _clearTimeText;
+    [SerializeField] Image[] _gameClearImages;
     [SerializeField] GameObject[] _spawnPoints; //オブジェクトの出現地点
     [SerializeField] GameObject[] _spawnObjects; //クリックしたら生成されるオブジェクト
     [SerializeField] GameObject _punchUI;
-    [SerializeField] Image[] _gameClearImages;
+    [SerializeField] GameObject _resultUI;
     RandomNumSystem _randomNumSystem;
+    SoundManager _soundManager;
     RaycastHit _clickHit;
     Vector3 _clickPos;
     GameObject _clickObj;
     int _randomNum;
-    int _punchPowerCount ;
+    int _punchPowerCount;
     int _buyPunchPowerCount;
+    float _timer;
     float _spawnCount;
-    bool _isGameClear = true;
+    bool _isGameClear;
+    bool _timerStop = false;
 
     void Awake()
     {
         _randomNumSystem = FindAnyObjectByType<RandomNumSystem>();
+        _soundManager = FindAnyObjectByType<SoundManager>();
     }
 
     void Start()
     {
         _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString("f0");
         _scaleAppleText.text = _punchPower[_punchPowerCount].ToString();
+        _resultUI.SetActive(false);
     }
 
     void Update()
     {
+        if (!_timerStop)
+        {
+            _timer += Time.deltaTime;
+            _timerText.text = _timer.ToString("f0");
+        }
+
         if (!_isGameClear)
         {
             if (Input.GetMouseButtonDown(0))
@@ -54,21 +68,15 @@ public class ClickSysTem : MonoBehaviour
                         }
                     }
                 }
-            }   
-        }
-        else
-        {
-            
+            }
         }
 
-        if (_isGameClear == true)
+        if (_spawnCount >= 5000000)
         {
-            _gameClearImages[0].rectTransform.DOMoveX(-357, 0.5f);
-            _gameClearImages[1].rectTransform.DOMoveX(435, 0.5f);  
-        } 
-        if (_spawnCount == 50000000)
-        {
-            
+            _isGameClear = true;
+            _timerStop = true;
+            _resultUI.SetActive(true);
+            _clearTimeText.text = _timer.ToString("f1");
         }
     }
 
@@ -105,6 +113,7 @@ public class ClickSysTem : MonoBehaviour
         {
             _clickCountText.rectTransform.DOPivotY(0.5f, 0.1f);
         });
+        _soundManager.AudioPlay(0);
     }
 
     int RandomNumValue(int minValue, int maxValue)
@@ -114,28 +123,36 @@ public class ClickSysTem : MonoBehaviour
 
     public void PunchPowerLevelUp()
     {
-        if (_punchPowerCount != 9)
+        if (!_isGameClear)
         {
-            if (_spawnCount >= _buyPunchPower[_buyPunchPowerCount])
+            if (_punchPowerCount != 9)
             {
-                _spawnCount -= _buyPunchPower[_buyPunchPowerCount];
-                _buyPunchPowerCount++;
-                _punchPowerCount++;
-                _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString();
-                _scaleAppleText.text = _punchPower[_punchPowerCount].ToString();
-                _clickCountText.text = _spawnCount.ToString("f0");
+                if (_spawnCount >= _buyPunchPower[_buyPunchPowerCount])
+                {
+                    _spawnCount -= _buyPunchPower[_buyPunchPowerCount];
+                    _buyPunchPowerCount++;
+                    _punchPowerCount++;
+                    _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString();
+                    _scaleAppleText.text = _punchPower[_punchPowerCount].ToString();
+                    _clickCountText.text = _spawnCount.ToString("f0");
+                }
+                else
+                {
+                    Debug.Log("強化できない");
+                }
             }
             else
             {
-                Debug.Log("強化できない");
+                _nextPunchPowerBuyText.text = "最大です";
             }
-        }
-        else
-        {
-            _nextPunchPowerBuyText.text = "最大です";
-        }
 
-        _punchUI.transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f)
-            .OnComplete(() => { _punchUI.transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), 0.2f); });
+            _punchUI.transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f)
+                .OnComplete(() => { _punchUI.transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), 0.2f); });
+        }
+    }
+
+    public void ResetScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
