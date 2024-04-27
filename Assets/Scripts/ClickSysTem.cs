@@ -77,6 +77,7 @@ public class ClickSysTem : MonoBehaviour
             _timerStop = true;
             _resultUI.SetActive(true);
             _clearTimeText.text = _timer.ToString("f1");
+            _soundManager.AudioPlay(1);
         }
     }
 
@@ -135,10 +136,12 @@ public class ClickSysTem : MonoBehaviour
                     _nextPunchPowerBuyText.text = _buyPunchPower[_buyPunchPowerCount].ToString();
                     _scaleAppleText.text = _punchPower[_punchPowerCount].ToString();
                     _clickCountText.text = _spawnCount.ToString("f0");
+                    _soundManager.AudioPlay(2);
                 }
                 else
                 {
                     Debug.Log("強化できない");
+                    _soundManager.AudioPlay(3);
                 }
             }
             else

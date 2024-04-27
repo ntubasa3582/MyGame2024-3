@@ -18,7 +18,7 @@ public class SoundManager : MonoBehaviour
         }
         
         _audioSource = GameObject.FindAnyObjectByType<AudioSource>();
-        _audioSource.volume = 0.1f;
+        _audioSource.volume = 0.2f;
     }
 
     public void AudioPlay(int value)
